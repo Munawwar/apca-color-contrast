@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/d3-color@3"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/Myndex/SAPC-APCA/JS/APCAonly.98e_d12e.js"></script>
+    <script type="text/javascript" src="index.js"></script>
+    <style>
+      #error {
+        color: maroon;
+        margin-left: 16px;
+      }
+      #preview-bg-color {
+        width: 250px;
+        height: 90px;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: sans-serif;
+      }
+    </style>
+  </head>
+  <body onload="attach()">
+    Fill in Text color or Background color, not both.
+    <br><br>
+    <br><br>
+
+    <label for="text-color">Text color (in hex): </label>
+    <input type="text" id="text-color" value="17c083" />
+    <br><br>
+    <label for="bg-color">Background color (in hex): </label>
+    <input type="text" id="bg-color" />
+
+    <br><br>
+    <label for="font-size">Font Size (in pixels): </label>
+    <input type="number" id="font-size" value="16" disabled />
+    <br><br>
+    <label for="font-weight">Font Weight (between 100 to 900): </label>
+    <input type="number" id="font-weight" value="400" disabled />
+    <br><br>
+
+    <button type="button" id="submit">Compute color</button>
+    <span id="error"></span>
+    <br><br>
+    <div id="preview-bg-color">
+      <div id="preview-text-color"></div>
+    </div>
+    
+    <br><br>
+    <br><br>
+    Algo will try to match L=75 of https://www.myndex.com/SAPC/ table
+  </body>
+</html>
