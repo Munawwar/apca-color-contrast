@@ -406,7 +406,7 @@ function attach() {
       }
       contrastLevelToMatch = parseFloat(contrastLevelToMatch);
       if (!contrastLevelToMatch) {
-        showError('Selected font size + font weight combination is discouraged. Either increase font size or font weight');
+        showError('Selected font size + font weight combination is discouraged. Either change font size or font weight');
         return;
       }
       const diffProp = `diff${contrastLevelToMatch}`;
@@ -416,8 +416,12 @@ function attach() {
       previewBgColorEl.style.backgroundColor = contrastColor.color;
       previewTextColorEl.textContent = `Bg color ${contrastColor.color}`;
       previewTextColorEl.style.color = `#${textColor}`;
-      const failText = contrastColor.contrastAbs < contrastLevelToMatch ? ' Fail: Cannot pass APCA for main content text without increasing font weight or font size' : '';
-      previewNoteEl.textContent = `Attempted to match contrast ${contrastLevelToMatch}.${failText}`;
+      previewTextColorEl.style.fontSize = `${Math.max(fontSize, 24)}px`;
+      previewTextColorEl.style.fontWeight = fontWeight;
+      const note = contrastColor.contrastAbs < contrastLevelToMatch
+        ? `Failed to match contrast ${contrastLevelToMatch}. Showing closest match (${contrastColor.contrastAbs.toFixed(0)}). I suggest changing font weight or font size.`
+        : `Passes contrast level ${contrastLevelToMatch}`;
+      previewNoteEl.textContent = note;
     } else {
       const { l: origL, a, b } = d3.lab(d3.rgb(`#${bgColor}`));
       const colors = [];
@@ -455,7 +459,7 @@ function attach() {
       }
       contrastLevelToMatch = parseFloat(contrastLevelToMatch);
       if (!contrastLevelToMatch) {
-        showError('Selected font size + font weight combination is discouraged. Either increase font size or font weight');
+        showError('Selected font size + font weight combination is discouraged. Either change font size or font weight');
         return;
       }
       const diffProp = `diff${contrastLevelToMatch}`;
@@ -465,8 +469,12 @@ function attach() {
       previewBgColorEl.style.backgroundColor = `#${bgColor}`;
       previewTextColorEl.textContent = `Text color ${contrastColor.color}`;
       previewTextColorEl.style.color = contrastColor.color;
-      const failText = contrastColor.contrastAbs < contrastLevelToMatch ? ' Fail: Cannot pass APCA for main content text without increasing font weight or font size' : '';
-      previewNoteEl.textContent = `Attempted to match contrast ${contrastLevelToMatch}.${failText}`;
+      previewTextColorEl.style.fontSize = `${Math.max(fontSize, 24)}px`;
+      previewTextColorEl.style.fontWeight = fontWeight;
+      const note = contrastColor.contrastAbs < contrastLevelToMatch
+        ? `Failed to match contrast ${contrastLevelToMatch}. Showing closest match (${contrastColor.contrastAbs.toFixed(0)}). I suggest changing font weight or font size.`
+        : `Passes contrast level ${contrastLevelToMatch}`;
+      previewNoteEl.textContent = note;
     }
   };
 }
