@@ -387,15 +387,15 @@ function attach() {
 
     // compute a good contrast color
     if (textColor) {
-      const { l: origL, a, b } = d3.lab(d3.rgb(`#${textColor}`));
+      const { l: h, u: s, v: l } = d3.hsluv(d3.rgb(`#${textColor}`));
       const colors = [];
       for (let i = 0; i <= 100; i += 1) {
-        const color = d3.lab(i, a, b);
+        const color = d3.hsluv(h, s, i);
         /** @type {number} */
         const contrast = APCAcontrast(d3ToNum(color), parseInt(textColor, 16));
         const contrastAbs = Math.abs(contrast);
         colors.push({
-          lstar: i,
+          lightness: i,
           color: color.formatHex(),
           contrast,
           contrastAbs,
@@ -417,15 +417,15 @@ function attach() {
         : `Passes contrast level ${contrastLevelToMatch}`;
       previewNoteEl.textContent = note;
     } else {
-      const { l: origL, a, b } = d3.lab(d3.rgb(`#${bgColor}`));
+      const { l: h, u: s, v: l } = d3.hsluv(d3.rgb(`#${bgColor}`));
       const colors = [];
       for (let i = 0; i <= 100; i += 1) {
-        const color = d3.lab(i, a, b);
+        const color = d3.hsluv(h, s, i);
         /** @type {number} */
         const contrast = APCAcontrast(parseInt(bgColor, 16), d3ToNum(color));
         const contrastAbs = Math.abs(contrast);
         colors.push({
-          lstar: i,
+          lightness: i,
           /** @type {string} */
           color: color.formatHex(),
           contrast,
