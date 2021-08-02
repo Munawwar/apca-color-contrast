@@ -8,9 +8,6 @@ function select(str) {
 function d3ToNum(d3Color) {
   return parseInt(d3Color.formatHex().replace(/^#/, ''), 16);
 }
-function showError(text) {
-  select('#error').textContent = text;
-}
 
 const apcaLookup = {
   "byFontSize": {
@@ -338,6 +335,15 @@ function attach() {
   const previewBgColorEl = select('#preview-bg-color');
   const previewTextColorEl = select('#preview-text-color');
   const previewNoteEl = select('#preview-note');
+
+  function showError(text) {
+    select('#error').textContent = text;
+    previewBgColorEl.setAttribute('style', '');
+    previewTextColorEl.setAttribute('style', '');
+    previewTextColorEl.textContent = '';
+    previewNoteEl.textContent = '';
+  }
+
   select('#submit').onclick = () => {
     const textColor = textColorEl.value.trim().replace(/^#/, '');
     const bgColor = bgColorEl.value.trim().replace(/^#/, '');
@@ -369,6 +375,16 @@ function attach() {
     }
     showError('');
 
+    let contrastLevelToMatch = apcaLookup.byFontSize[fontSize][fontWeight];
+    if (contrastLevelToMatch === '>20') {
+      contrastLevelToMatch = '20';
+    }
+    contrastLevelToMatch = parseFloat(contrastLevelToMatch);
+    if (!contrastLevelToMatch) {
+      showError('Selected font size + font weight combination is discouraged. Either change font size or font weight');
+      return;
+    }
+
     // compute a good contrast color
     if (textColor) {
       const { l: origL, a, b } = d3.lab(d3.rgb(`#${textColor}`));
@@ -383,34 +399,12 @@ function attach() {
           color: color.formatHex(),
           contrast,
           contrastAbs,
-          diff100: calcContrastDelta(100, contrastAbs),
-          diff90: calcContrastDelta(90, contrastAbs),
-          diff80: calcContrastDelta(80, contrastAbs),
-          diff75: calcContrastDelta(75, contrastAbs),
-          diff60: calcContrastDelta(60, contrastAbs),
-          diff55: calcContrastDelta(55, contrastAbs),
-          diff50: calcContrastDelta(50, contrastAbs),
-          diff40: calcContrastDelta(40, contrastAbs),
-          diff38: calcContrastDelta(38, contrastAbs),
-          diff35: calcContrastDelta(35, contrastAbs),
-          diff30: calcContrastDelta(30, contrastAbs),
-          diff25: calcContrastDelta(25, contrastAbs),
-          diff20: calcContrastDelta(20, contrastAbs),
+          diff: calcContrastDelta(contrastLevelToMatch, contrastAbs),
         });
       }
       console.log(colors)
 
-      let contrastLevelToMatch = apcaLookup.byFontSize[fontSize][fontWeight];
-      if (contrastLevelToMatch === '>20') {
-        contrastLevelToMatch = '20';
-      }
-      contrastLevelToMatch = parseFloat(contrastLevelToMatch);
-      if (!contrastLevelToMatch) {
-        showError('Selected font size + font weight combination is discouraged. Either change font size or font weight');
-        return;
-      }
-      const diffProp = `diff${contrastLevelToMatch}`;
-      const contrastColor = colors.sort((a, b) => a[diffProp] - b[diffProp])[0];
+      const contrastColor = colors.sort((a, b) => a.diff - b.diff)[0];
       console.log(contrastColor);
   
       previewBgColorEl.style.backgroundColor = contrastColor.color;
@@ -436,34 +430,12 @@ function attach() {
           color: color.formatHex(),
           contrast,
           contrastAbs: Math.abs(contrast),
-          diff100: calcContrastDelta(100, contrastAbs),
-          diff90: calcContrastDelta(90, contrastAbs),
-          diff80: calcContrastDelta(80, contrastAbs),
-          diff75: calcContrastDelta(75, contrastAbs),
-          diff60: calcContrastDelta(60, contrastAbs),
-          diff55: calcContrastDelta(55, contrastAbs),
-          diff50: calcContrastDelta(50, contrastAbs),
-          diff40: calcContrastDelta(40, contrastAbs),
-          diff38: calcContrastDelta(38, contrastAbs),
-          diff35: calcContrastDelta(35, contrastAbs),
-          diff30: calcContrastDelta(30, contrastAbs),
-          diff25: calcContrastDelta(25, contrastAbs),
-          diff20: calcContrastDelta(20, contrastAbs),
+          diff: calcContrastDelta(contrastLevelToMatch, contrastAbs),
         });
       }
       console.log(colors)
-
-      let contrastLevelToMatch = apcaLookup.byFontSize[fontSize][fontWeight];
-      if (contrastLevelToMatch === '>20') {
-        contrastLevelToMatch = '20';
-      }
-      contrastLevelToMatch = parseFloat(contrastLevelToMatch);
-      if (!contrastLevelToMatch) {
-        showError('Selected font size + font weight combination is discouraged. Either change font size or font weight');
-        return;
-      }
-      const diffProp = `diff${contrastLevelToMatch}`;
-      const contrastColor = colors.sort((a, b) => a[diffProp] - b[diffProp])[0];
+      
+      const contrastColor = colors.sort((a, b) => a.diff - b.diff)[0];
       console.log(contrastColor);
   
       previewBgColorEl.style.backgroundColor = `#${bgColor}`;
