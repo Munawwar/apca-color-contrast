@@ -404,7 +404,10 @@ function attach() {
       }
       console.log(colors)
 
-      const contrastColor = colors.sort((a, b) => a.diff - b.diff)[0];
+      let contrastColor = colors.sort((a, b) => a.diff - b.diff)[0];
+      if (contrastColor.diff === Infinity) {
+        contrastColor = colors.sort((a, b) => b.contrastAbs - a.contrastAbs)[0];
+      }
       console.log(contrastColor);
   
       previewBgColorEl.style.backgroundColor = contrastColor.color;
@@ -435,7 +438,10 @@ function attach() {
       }
       console.log(colors)
       
-      const contrastColor = colors.sort((a, b) => a.diff - b.diff)[0];
+      let contrastColor = colors.sort((a, b) => a.diff - b.diff)[0];
+      if (contrastColor.diff === Infinity) {
+        contrastColor = colors.sort((a, b) => b.contrastAbs - a.contrastAbs)[0];
+      }
       console.log(contrastColor);
   
       previewBgColorEl.style.backgroundColor = `#${bgColor}`;
