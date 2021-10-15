@@ -364,10 +364,6 @@ function attach() {
       showError('Please fill either text or background color');
       return;
     }
-    if (textColor && bgColor) {
-      showError('Please fill either text *or* background color, not both');
-      return;
-    }
     if (textColor && !(/^[0-9a-fA-F]{6}$/).test(textColor)) {
       showError('Invalid text color');
       return;
@@ -389,7 +385,18 @@ function attach() {
     }
 
     // compute a good contrast color
-    if (textColor) {
+    if (textColor && bgColor) {
+      const contrast = APCAcontrast(parseInt(bgColor, 16), parseInt(textColor, 16));
+      previewBgColorEl.style.backgroundColor = bgColor;
+      previewTextColorEl.style.color = `#${textColor}`;
+      previewTextColorEl.textContent = 'Preview';
+      previewTextColorEl.style.fontSize = `${fontSize}px`;
+      previewTextColorEl.style.fontWeight = fontWeight;
+      const note = contrast < contrastLevelToMatch
+        ? `Failed to match contrast ${contrastLevelToMatch} (Currently ${contrast.toFixed(1)}). I suggest changing font weight or font size.`
+        : `Passes contrast level ${contrastLevelToMatch}`;
+      previewNoteEl.textContent = note;
+    } else if (textColor) {
       const { l: h, u: s, v: l } = d3.hsluv(d3.rgb(`#${textColor}`));
       const colors = [];
       for (let i = 0; i <= 100; i += 1) {
