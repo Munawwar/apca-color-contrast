@@ -1,5 +1,6 @@
 let colorPickerInitialized = false;
 let initColorPicker = (() => {
+  let pickerSize = 400;
   var aa = "function" == typeof Object.defineProperties ? Object.defineProperty : function(a, b, c) {
       if (a == Array.prototype || a == Object.prototype)
           return a;
@@ -406,7 +407,7 @@ let initColorPicker = (() => {
           Ca.style.backgroundColor = B;
           6 !== t && (A.value = B);
           if (q && (B = l.c.map(a),
-          p.clearRect(0, 0, 400, 400),
+          p.clearRect(0, 0, pickerSize, pickerSize),
           p.globalCompositeOperation = "source-over",
           0 !== g && 100 !== g)) {
               for (var C = [], M = [], E, F = 0; F < B.length; F++)
@@ -508,8 +509,8 @@ let initColorPicker = (() => {
       za(k, {
           m: function(d) {
               d = b({
-                  x: 400 * d.x,
-                  y: 400 * d.y
+                  x: pickerSize * d.x,
+                  y: pickerSize * d.y
               });
               d = ka(l, d);
               d = pa(oa([g, d.x, d.y]));
@@ -520,8 +521,8 @@ let initColorPicker = (() => {
           v: function(d) {
               var r = l.o;
               return G(b({
-                  x: 400 * d.x,
-                  y: 400 * d.y
+                  x: pickerSize * d.x,
+                  y: pickerSize * d.y
               })) < r
           }
       });

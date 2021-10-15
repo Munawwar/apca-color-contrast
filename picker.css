@@ -4,13 +4,17 @@
 #display {
     display: none;
     position: relative;
-    width: 400px;
-    height: 400px;
+    width: 320px;
+    height: 320px;
 }
 
 #picker {
-    width: 400px;
+    width: 320px;
     margin: auto;
+}
+
+#picker input {
+    min-width: 140px;
 }
 
 dialog {
@@ -104,10 +108,11 @@ dialog[open]+.backdrop {
     margin: 5px 5px;
     padding-left: 0;
     padding-right: 0;
-    width: 180px;
+    min-width: 140px;
+    width: 141px;
     cursor: pointer;
 }
 #picker-save-color {
-    margin-left: 19px;
+    margin-left: 23px;
 }
   
