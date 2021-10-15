@@ -327,6 +327,7 @@ const calcContrastDelta = (target, value) => {
   return diff < 0 ? Infinity : diff;
 }
 
+let valid = false;
 function attach() {
   const textColorEl = select('#text-color');
   const bgColorEl = select('#bg-color');
@@ -344,12 +345,13 @@ function attach() {
     previewNoteEl.textContent = '';
   }
 
-  select('#submit').onclick = () => {
+  function compute() {
     const textColor = textColorEl.value.trim().replace(/^#/, '');
     const bgColor = bgColorEl.value.trim().replace(/^#/, '');
     const fontSize = parseFloat(fontSizeEl.value);
     const fontWeight = parseFloat(fontWeightEl.value);
 
+    valid = false;
     if (!fontSize) {
       showError('Invalid font size');
       return;
@@ -373,6 +375,7 @@ function attach() {
       showError('Invalid background color');
       return;
     }
+    valid = true;
     showError('');
 
     let contrastLevelToMatch = apcaLookup.byFontSize[fontSize][fontWeight];
@@ -402,21 +405,21 @@ function attach() {
           diff: calcContrastDelta(contrastLevelToMatch, contrastAbs),
         });
       }
-      console.log(colors)
+      // console.log(colors)
 
       let contrastColor = colors.sort((a, b) => a.diff - b.diff)[0];
       if (contrastColor.diff === Infinity) {
         contrastColor = colors.sort((a, b) => b.contrastAbs - a.contrastAbs)[0];
       }
-      console.log(contrastColor);
+      // console.log(contrastColor);
   
       previewBgColorEl.style.backgroundColor = contrastColor.color;
       previewTextColorEl.textContent = `Bg color ${contrastColor.color}`;
       previewTextColorEl.style.color = `#${textColor}`;
-      previewTextColorEl.style.fontSize = `${Math.max(fontSize, 24)}px`;
+      previewTextColorEl.style.fontSize = `${fontSize}px`;
       previewTextColorEl.style.fontWeight = fontWeight;
       const note = contrastColor.contrastAbs < contrastLevelToMatch
-        ? `Failed to match contrast ${contrastLevelToMatch}. Showing closest match (${contrastColor.contrastAbs.toFixed(0)}). I suggest changing font weight or font size.`
+        ? `Failed to match contrast ${contrastLevelToMatch}. Showing closest match (${contrastColor.contrastAbs.toFixed(1)}). I suggest changing font weight or font size.`
         : `Passes contrast level ${contrastLevelToMatch}`;
       previewNoteEl.textContent = note;
     } else {
@@ -436,23 +439,29 @@ function attach() {
           diff: calcContrastDelta(contrastLevelToMatch, contrastAbs),
         });
       }
-      console.log(colors)
+      // console.log(colors)
       
       let contrastColor = colors.sort((a, b) => a.diff - b.diff)[0];
       if (contrastColor.diff === Infinity) {
         contrastColor = colors.sort((a, b) => b.contrastAbs - a.contrastAbs)[0];
       }
-      console.log(contrastColor);
+      // console.log(contrastColor);
   
       previewBgColorEl.style.backgroundColor = `#${bgColor}`;
       previewTextColorEl.textContent = `Text color ${contrastColor.color}`;
       previewTextColorEl.style.color = contrastColor.color;
-      previewTextColorEl.style.fontSize = `${Math.max(fontSize, 24)}px`;
+      previewTextColorEl.style.fontSize = `${fontSize}px`;
       previewTextColorEl.style.fontWeight = fontWeight;
       const note = contrastColor.contrastAbs < contrastLevelToMatch
-        ? `Failed to match contrast ${contrastLevelToMatch}. Showing closest match (${contrastColor.contrastAbs.toFixed(0)}). I suggest changing font weight or font size.`
+        ? `Failed to match contrast ${contrastLevelToMatch}. Showing closest match (${contrastColor.contrastAbs.toFixed(1)}). I suggest changing font weight or font size.`
         : `Passes contrast level ${contrastLevelToMatch}`;
       previewNoteEl.textContent = note;
     }
   };
+  compute();
+
+  select('#text-color').oninput =
+    select('#bg-color').oninput =
+    select('#font-size').onchange =
+    select('#font-weight').onchange = compute;
 }

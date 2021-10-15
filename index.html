@@ -14,10 +14,11 @@
       }
       .formGrid {
         display: grid;
-        width: max-content;
+        width: fit-content;
         grid-template-columns: auto auto;
         align-items: baseline;
         gap: 20px;
+        margin-bottom: 40px;
       }
       .formGrid label {
         text-align: right;
@@ -28,15 +29,15 @@
       .formGrid-leftHandNote {
         text-align: right;
         max-width: 250px;
+        align-self: flex-start;
       }
 
-      #error {
+      #error:not(:empty) {
         color: maroon;
-        margin: 10px 0;
         max-width: 440px;
       }
       #preview-area {
-        width: 250px;
+        display: inline-block;
       }
       #preview-bg-color {
         height: 90px;
@@ -45,11 +46,21 @@
         align-items: center;
         justify-content: center;
         font-family: sans-serif;
+        position: relative;
       }
-      #preview-contrast-value {
-        text-align: center;
+      #preview-text-color {
+        padding: 0 1em;
       }
-      #preview-note {
+      #preview-text-color:not(:empty)::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        height: 2px;
+        background-color: currentColor;
+      }
+      #preview-note:not(:empty) {
         margin-top: 5px;
         text-align: center;
       }
@@ -64,17 +75,18 @@
       <label for="text-color">Text color (in hex)</label>
       <div>
         <input type="text" id="text-color" />
+        <button id="text-color-change">Adjust Color</button>
       </div>
 
       <label for="bg-color">Background color (in hex)</label>
       <div>
         <input type="text" id="bg-color" value="f2f4ff" />
+        <button id="bg-color-change">Adjust Color</button>
       </div>
 
       <label for="font-size">Font Size (in pixels)</label>
       <div>
         <select id="font-size">
-          <option value="14">12</option>
           <option value="14">14</option>
           <option value="16" selected>16 - 18</option>
           <option value="24">24 - 36</option>
@@ -82,19 +94,10 @@
         </select>
       </div>
 
-      <label for="font-weight">Font Weight (between 100 to 900)</label>
+      <label for="font-weight">Font Weight</label>
       <div>
-        <select id="font-weight">
-          <option value="100">100</option>
-          <option value="200">200</option>
-          <option value="300">300 (light)</option>
-          <option value="400" selected>400 (normal)</option>
-          <option value="500">500</option>
-          <option value="600">600 (semi-bold)</option>
-          <option value="700">700 (bold)</option>
-          <option value="800">800</option>
-          <option value="900">900</option>
-        </select>
+        <input type="range" id="font-weight" step="100" min="100" max="900" value="400" oninput="this.nextElementSibling.value = this.value">
+        <output>400</output>
       </div>
 
       <label for="text-purpose" aria-describedby="text-purpose-desc">Text purpose</label>
@@ -115,12 +118,7 @@
         (using <a href="https://www.myndex.com/APCA">contrast lookup table</a>)
       </span>
       <div>
-        <button type="button" id="submit">Compute color</button>
         <div id="error"></div>
-      </div>
-
-      <span></span>
-      <div>
         <div id="preview-area">
           <div id="preview-bg-color">
             <div id="preview-text-color"></div>
@@ -129,5 +127,56 @@
         </div>
       </div>
     </div>
+
+
+    <!-- Floating picker -->
+  <dialog id="picker">
+    <h3>HSLuv Color Picker</h3>
+    <div id="display">
+      <canvas style="position:absolute;left:0" height="400" width="400"></canvas>
+      <svg style="position:absolute;left:0" height="400" width="400"></svg>
+    </div>
+    <table>
+      <tr id="control-h">
+        <td class="cell-input">
+          <input type="number" min="0" max="360" step="any" class="counter counter-hue" tabindex="0"/>
+        </td>
+        <td><div class="range-slider"></div></td>
+        <td class="picker-label">H</td>
+      </tr>
+      <tr id="control-s">
+        <td class="cell-input">
+          <input type="number" step="any" min="0" max="100" class="counter counter-saturation"/>
+        </td>
+        <td><div class="range-slider"></div></td>
+        <td class="picker-label">S</td>
+      </tr>
+      <tr id="control-l">
+        <td class="cell-input">
+          <input type="number" step="any" min="0" max="100" class="counter counter-lightness"/>
+        </td>
+        <td><div class="range-slider"></div></td>
+        <td class="picker-label">L</td>
+      </tr>
+      <tr>
+        <td class="cell-input cell-input-hex">
+          <input class="input-hex" pattern="#?[0-9a-fA-F]{6}"/>
+        </td>
+        <td><div class="swatch"></div></td>
+        <td></td>
+      </tr>
+    </table>
+    <div class="picker-footer">
+      <button id="picker-cancel-color">Cancel</button>
+      <button id="picker-save-color">Use Color</button>
+    </div>
+    <link rel="stylesheet" href="./picker.css" />
+    <script type="application/javascript" src="./picker.js"></script>
+    <script>
+      document.querySelector('#text-color-change').onclick = window.createColorPickerOnClickHandler(document.querySelector('#text-color'))
+      document.querySelector('#bg-color-change').onclick = window.createColorPickerOnClickHandler(document.querySelector('#bg-color'))
+    </script>
+  </dialog>
+  <div class="backdrop"></div>
   </body>
 </html>
