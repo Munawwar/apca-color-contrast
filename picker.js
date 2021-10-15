@@ -585,6 +585,7 @@ let initColorPicker = (() => {
     }
   }
 
+  document.querySelector('.backdrop').onclick =
   document.querySelector('#picker-cancel-color').onclick = () => {
     dialog.removeAttribute('open');
     dialog.open = false;

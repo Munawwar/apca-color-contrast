@@ -187,13 +187,15 @@
       <button id="picker-cancel-color">Cancel</button>
       <button id="picker-save-color">Use Color</button>
     </div>
-    <link rel="stylesheet" href="./picker.css" />
-    <script type="application/javascript" src="./picker.js"></script>
-    <script>
-      document.querySelector('#text-color-change').onclick = window.createColorPickerOnClickHandler(document.querySelector('#text-color'))
-      document.querySelector('#bg-color-change').onclick = window.createColorPickerOnClickHandler(document.querySelector('#bg-color'))
-    </script>
   </dialog>
   <div class="backdrop"></div>
+
+  <!-- color picker init -->
+  <link rel="stylesheet" href="./picker.css" />
+  <script type="application/javascript" src="./picker.js"></script>
+  <script>
+    document.querySelector('#text-color-change').onclick = window.createColorPickerOnClickHandler(document.querySelector('#text-color'))
+    document.querySelector('#bg-color-change').onclick = window.createColorPickerOnClickHandler(document.querySelector('#bg-color'))
+  </script>
   </body>
 </html>
