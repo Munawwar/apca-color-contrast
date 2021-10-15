@@ -571,6 +571,7 @@ let initColorPicker = (() => {
   }
 
   window.createColorPickerOnClickHandler = (colorInputEl) => () => {
+    dialog.setAttribute('open', '');
     dialog.open = true;
     initColorPicker();
     // setTimeout(initColorPicker, 500);
@@ -579,11 +580,13 @@ let initColorPicker = (() => {
       colorInputEl.value = internalHexInput.value.replace('#', '');
       colorInputEl.dispatchEvent(new Event('input'));
       saveColorButton.onclick = null;
+      dialog.removeAttribute('open');
       dialog.open = false;
     }
   }
 
   document.querySelector('#picker-cancel-color').onclick = () => {
+    dialog.removeAttribute('open');
     dialog.open = false;
   }
 })();
