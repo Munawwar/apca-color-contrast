@@ -387,7 +387,7 @@ function attach() {
     // compute a good contrast color
     if (textColor && bgColor) {
       const contrast = APCAcontrast(parseInt(bgColor, 16), parseInt(textColor, 16));
-      previewBgColorEl.style.backgroundColor = bgColor;
+      previewBgColorEl.style.backgroundColor = `#${bgColor}`;
       previewTextColorEl.style.color = `#${textColor}`;
       previewTextColorEl.textContent = 'Preview';
       previewTextColorEl.style.fontSize = `${fontSize}px`;
