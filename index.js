@@ -386,14 +386,14 @@ function attach() {
 
     // compute a good contrast color
     if (textColor && bgColor) {
-      const contrast = APCAcontrast(parseInt(bgColor, 16), parseInt(textColor, 16));
+      const contrastAbs = Math.abs(APCAcontrast(parseInt(bgColor, 16), parseInt(textColor, 16)));
       previewBgColorEl.style.backgroundColor = `#${bgColor}`;
       previewTextColorEl.style.color = `#${textColor}`;
       previewTextColorEl.textContent = 'Preview';
       previewTextColorEl.style.fontSize = `${fontSize}px`;
       previewTextColorEl.style.fontWeight = fontWeight;
-      const note = contrast < contrastLevelToMatch
-        ? `Failed to match contrast ${contrastLevelToMatch} (Currently ${contrast.toFixed(1)}). I suggest changing font weight or font size.`
+      const note = contrastAbs < contrastLevelToMatch
+        ? `Failed to match contrast ${contrastLevelToMatch} (Currently ${contrastAbs.toFixed(1)}). I suggest changing font weight or font size.`
         : `Passes contrast level ${contrastLevelToMatch}`;
       previewNoteEl.textContent = note;
     } else if (textColor) {
