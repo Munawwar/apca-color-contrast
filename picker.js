@@ -573,8 +573,8 @@ let initColorPicker = (() => {
   window.createColorPickerOnClickHandler = (colorInputEl) => () => {
     dialog.setAttribute('open', '');
     dialog.open = true;
+    dialog.querySelector('input').focus(); // focus 1st field for a11y
     initColorPicker();
-    // setTimeout(initColorPicker, 500);
     setPicker(colorInputEl.value);
     saveColorButton.onclick = () => {
       colorInputEl.value = internalHexInput.value.replace('#', '');

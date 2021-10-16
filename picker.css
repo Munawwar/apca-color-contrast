@@ -14,7 +14,7 @@
 }
 
 #picker input {
-    min-width: 140px;
+    min-width: 90px;
 }
 
 dialog {
@@ -56,7 +56,7 @@ dialog[open]+.backdrop {
 
 #picker td.cell-input {
     width: 80px;
-    padding-right: 20px;
+    padding-right: 10px;
 }
 
 #picker td.cell-input input {
@@ -85,7 +85,7 @@ dialog[open]+.backdrop {
 
 #picker table td.picker-label {
     color: #333;
-    width: 30px;
+    width: 15px;
     line-height: 22px;
 }
 
@@ -117,18 +117,35 @@ dialog[open]+.backdrop {
     -ms-touch-action: pan-y;
 }
 
+#picker h3 {
+    margin: 5px 0;
+}
+.picker-header {
+    display: flex;
+    justify-content: space-between;
+}
 .picker-footer {
     display: flex;
 }
-#picker-cancel-color, #picker-save-color {
+#picker-cancel-color {
+    font-size: 24px;
+    padding: 0;
+    border-radius: 50%;
+    border-width: 0;
+    min-width: auto;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    background-color: transparent;
+}
+#picker-cancel-color:hover {
+    background-color: #e5e5e5;
+}
+#picker-save-color {
     margin: 5px 5px;
     padding-left: 0;
     padding-right: 0;
-    min-width: 140px;
-    width: 141px;
+    width: 100%;
     cursor: pointer;
-}
-#picker-save-color {
-    margin-left: 23px;
 }
   

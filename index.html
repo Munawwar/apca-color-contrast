@@ -154,7 +154,10 @@
 
     <!-- Floating picker -->
   <dialog id="picker">
-    <h3>HSLuv Color Picker</h3>
+    <div class="picker-header">
+      <h3>HSLuv Color Picker</h3>
+      <button id="picker-cancel-color" aria-label="Close" aria-hidden="true">&times;</button>
+    </div>
     <div id="display">
       <canvas style="position:absolute;left:0" height="400" width="400"></canvas>
       <svg style="position:absolute;left:0" height="400" width="400"></svg>
@@ -189,7 +192,6 @@
       </tr>
     </table>
     <div class="picker-footer">
-      <button id="picker-cancel-color">Cancel</button>
       <button id="picker-save-color">Use Color</button>
     </div>
   </dialog>
