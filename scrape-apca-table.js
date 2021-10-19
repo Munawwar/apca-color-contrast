@@ -18,4 +18,5 @@ var lookup = arr.reduce((acc, x, i) => {
   return acc;
 }, {byFontSize: {}, byFontWeight: {}});
 
+delete lookup.lastFontSize;
 console.log(lookup)

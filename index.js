@@ -1,12 +1,16 @@
 function select(str) {
   return document.querySelector(str);
 }
+
 /**
- * @param {object} d3Color 
- * @returns {string}
+ * @param {string} bgColor in sRGB hex (# allowed as prefix)
+ * @param {string} textColor in sRGB hex (# allowed as prefix)
  */
-function d3ToNum(d3Color) {
-  return parseInt(d3Color.formatHex().replace(/^#/, ''), 16);
+function computeContrast(bgColor, textColor) {
+  return APCAcontrast(
+    sRGBtoY(parseInt(textColor.replace(/^#/, ''), 16)),
+    sRGBtoY(parseInt(bgColor.replace(/^#/, ''), 16))
+  )
 }
 
 const apcaLookup = {
@@ -311,8 +315,7 @@ const apcaLookup = {
           "96": ">20",
           "120": ">20"
       }
-  },
-  "lastFontSize": "120"
+  }
 };
 
 const targetContrast = 90;
@@ -386,7 +389,7 @@ function attach() {
 
     // compute a good contrast color
     if (textColor && bgColor) {
-      const contrastAbs = Math.abs(APCAcontrast(parseInt(bgColor, 16), parseInt(textColor, 16)));
+      const contrastAbs = Math.abs(computeContrast(bgColor, textColor));
       previewBgColorEl.style.backgroundColor = `#${bgColor}`;
       previewTextColorEl.style.color = `#${textColor}`;
       previewTextColorEl.textContent = 'Preview';
@@ -402,7 +405,7 @@ function attach() {
       for (let i = 0; i <= 100; i += 1) {
         const color = d3.hsluv(h, s, i);
         /** @type {number} */
-        const contrast = APCAcontrast(d3ToNum(color), parseInt(textColor, 16));
+        const contrast = computeContrast(color.formatHex(), textColor);
         const contrastAbs = Math.abs(contrast);
         colors.push({
           lightness: i,
@@ -435,7 +438,7 @@ function attach() {
       for (let i = 0; i <= 100; i += 1) {
         const color = d3.hsluv(h, s, i);
         /** @type {number} */
-        const contrast = APCAcontrast(parseInt(bgColor, 16), d3ToNum(color));
+        const contrast = computeContrast(bgColor, color.formatHex());
         const contrastAbs = Math.abs(contrast);
         colors.push({
           lightness: i,
