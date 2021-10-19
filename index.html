@@ -20,7 +20,12 @@
         padding: 5px 0;
       }
 
+      .container {
+        max-width: 640px;
+        margin: auto;
+      }
       .intro {
+        margin: 20px 0 30px 0;
         text-align: center;
       }
       .formGrid {
@@ -88,121 +93,121 @@
     </style>
   </head>
   <body onload="attach()">
-    <p class="intro">
-      Fill in text or background color to find the other.
-      <br>Or fill in both to check if contrast passes.
-    </p>
-    <br>
-
-    <div class="formGrid">
-      <label for="text-color">Text color (in hex)</label>
-      <div>
-        <input type="text" id="text-color" />
-        <button id="text-color-change">Adjust Color</button>
-      </div>
-
-      <label for="bg-color">Background color (in hex)</label>
-      <div>
-        <input type="text" id="bg-color" value="f2f4ff" />
-        <button id="bg-color-change">Adjust Color</button>
-      </div>
-
-      <label for="font-size">Font Size (in pixels)</label>
-      <div>
-        <select id="font-size">
-          <option value="14">14</option>
-          <option value="16" selected>16 - 18</option>
-          <option value="24">24 - 36</option>
-          <option value="48">48+</option>
-        </select>
-      </div>
-
-      <label for="font-weight">Font Weight</label>
-      <div>
-        <input type="range" id="font-weight" step="100" min="100" max="900" value="400" oninput="this.nextElementSibling.value = this.value">
-        <output>400</output>
-      </div>
-
-      <label for="text-purpose" aria-describedby="text-purpose-desc">Text purpose</label>
-      <div>
-        <select id="text-purpose" disabled>
-          <option value="primary" selected>Primary content</option>
-          <option value="secondary">Secondary content</option>
-        </select>
-        <p id="text-purpose-desc">
-          Primary content includes primary navigation, paragraphs etc. <br>
-          Same contrast standard applies for non-text colors on primary content,
-          like active navigation item background color, icon on icon-only buttons etc.
-        </p>
-      </div>
-
-      <span class="formGrid-leftHandNote">
-        Algorithm aims for APCA level 4
-        (using <a href="https://www.myndex.com/APCA">contrast lookup table</a>)
-      </span>
-      <div>
-        <div id="error"></div>
-        <div id="preview-area">
-          <div id="preview-bg-color">
-            <div id="preview-text-color"></div>
+    <div class="container">
+      <p class="intro">
+        Fill in text or background color to find the other.
+        <br>Or fill in both to check if contrast passes.
+      </p>
+      <div class="formGrid">
+        <label for="text-color">Text color (in hex)</label>
+        <div>
+          <input type="text" id="text-color" />
+          <button id="text-color-change">Adjust Color</button>
+        </div>
+  
+        <label for="bg-color">Background color (in hex)</label>
+        <div>
+          <input type="text" id="bg-color" value="f2f4ff" />
+          <button id="bg-color-change">Adjust Color</button>
+        </div>
+  
+        <label for="font-size">Font Size (in pixels)</label>
+        <div>
+          <select id="font-size">
+            <option value="14">14</option>
+            <option value="16" selected>16 - 18</option>
+            <option value="24">24 - 36</option>
+            <option value="48">48+</option>
+          </select>
+        </div>
+  
+        <label for="font-weight">Font Weight</label>
+        <div>
+          <input type="range" id="font-weight" step="100" min="100" max="900" value="400" oninput="this.nextElementSibling.value = this.value">
+          <output>400</output>
+        </div>
+  
+        <label for="text-purpose" aria-describedby="text-purpose-desc">Text purpose</label>
+        <div>
+          <select id="text-purpose" disabled>
+            <option value="primary" selected>Primary content</option>
+            <option value="secondary">Secondary content</option>
+          </select>
+          <p id="text-purpose-desc">
+            Primary content includes primary navigation, paragraphs etc. <br>
+            Same contrast standard applies for non-text colors on primary content,
+            like active navigation item background color, icon on icon-only buttons etc.
+          </p>
+        </div>
+  
+        <span class="formGrid-leftHandNote">
+          Algorithm aims for APCA level 4
+          (using <a href="https://www.myndex.com/APCA">contrast lookup table</a>)
+        </span>
+        <div>
+          <div id="error"></div>
+          <div id="preview-area">
+            <div id="preview-bg-color">
+              <div id="preview-text-color"></div>
+            </div>
+            <div id="preview-note"></div>
           </div>
-          <div id="preview-note"></div>
         </div>
       </div>
     </div>
 
 
     <!-- Floating picker -->
-  <dialog id="picker">
-    <div class="picker-header">
-      <h3>HSLuv Color Picker</h3>
-      <button id="picker-cancel-color" aria-label="Close" aria-hidden="true">&times;</button>
-    </div>
-    <div id="display">
-      <canvas style="position:absolute;left:0" height="400" width="400"></canvas>
-      <svg style="position:absolute;left:0" height="400" width="400"></svg>
-    </div>
-    <table>
-      <tr id="control-h">
-        <td class="cell-input">
-          <input type="number" min="0" max="360" step="any" class="counter counter-hue" tabindex="0"/>
-        </td>
-        <td><div class="range-slider"></div></td>
-        <td class="picker-label">H</td>
-      </tr>
-      <tr id="control-s">
-        <td class="cell-input">
-          <input type="number" step="any" min="0" max="100" class="counter counter-saturation"/>
-        </td>
-        <td><div class="range-slider"></div></td>
-        <td class="picker-label">S</td>
-      </tr>
-      <tr id="control-l">
-        <td class="cell-input">
-          <input type="number" step="any" min="0" max="100" class="counter counter-lightness"/>
-        </td>
-        <td><div class="range-slider"></div></td>
-        <td class="picker-label">L</td>
-      </tr>
-      <tr>
-        <td class="cell-input cell-input-hex">
-          <input class="input-hex" pattern="#?[0-9a-fA-F]{6}"/>
-        </td>
-        <td colspan="2"><div class="swatch"></div></td>
-      </tr>
-    </table>
-    <div class="picker-footer">
-      <button id="picker-save-color">Use Color</button>
-    </div>
-  </dialog>
-  <div class="backdrop"></div>
+    <dialog id="picker">
+      <div class="picker-header">
+        <h3>HSLuv Color Picker</h3>
+        <button id="picker-cancel-color" aria-label="Close" aria-hidden="true">&times;</button>
+      </div>
+      <div id="display">
+        <canvas style="position:absolute;left:0" height="400" width="400"></canvas>
+        <svg style="position:absolute;left:0" height="400" width="400"></svg>
+      </div>
+      <table>
+        <tr id="control-h">
+          <td class="cell-input">
+            <input type="number" min="0" max="360" step="any" class="counter counter-hue" tabindex="0"/>
+          </td>
+          <td><div class="range-slider"></div></td>
+          <td class="picker-label">H</td>
+        </tr>
+        <tr id="control-s">
+          <td class="cell-input">
+            <input type="number" step="any" min="0" max="100" class="counter counter-saturation"/>
+          </td>
+          <td><div class="range-slider"></div></td>
+          <td class="picker-label">S</td>
+        </tr>
+        <tr id="control-l">
+          <td class="cell-input">
+            <input type="number" step="any" min="0" max="100" class="counter counter-lightness"/>
+          </td>
+          <td><div class="range-slider"></div></td>
+          <td class="picker-label">L</td>
+        </tr>
+        <tr>
+          <td class="cell-input cell-input-hex">
+            <input class="input-hex" pattern="#?[0-9a-fA-F]{6}"/>
+          </td>
+          <td colspan="2"><div class="swatch"></div></td>
+        </tr>
+      </table>
+      <div class="picker-footer">
+        <button id="picker-save-color">Use Color</button>
+      </div>
+    </dialog>
+    <div class="backdrop"></div>
 
-  <!-- color picker init -->
-  <link rel="stylesheet" href="./picker.css" />
-  <script type="application/javascript" src="./picker.js"></script>
-  <script>
-    document.querySelector('#text-color-change').onclick = window.createColorPickerOnClickHandler(document.querySelector('#text-color'))
-    document.querySelector('#bg-color-change').onclick = window.createColorPickerOnClickHandler(document.querySelector('#bg-color'))
-  </script>
+    <!-- color picker init -->
+    <link rel="stylesheet" href="./picker.css" />
+    <script type="application/javascript" src="./picker.js"></script>
+    <script>
+      document.querySelector('#text-color-change').onclick = window.createColorPickerOnClickHandler(document.querySelector('#text-color'))
+      document.querySelector('#bg-color-change').onclick = window.createColorPickerOnClickHandler(document.querySelector('#bg-color'))
+    </script>
   </body>
 </html>
