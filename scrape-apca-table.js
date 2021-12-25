@@ -2,8 +2,9 @@
 var arr = Array
   .from($0.querySelectorAll('td:not(:first-child)'))
   .map(x => x.textContent)
-  .map(x => ['⊘', '©§', '©§™'].includes(x) ? '' : x)
-  .map(x => x.startsWith('×') ? '' : x);
+  .map(x => ['⊘', '©§', '©§™', 'NT'].some(search => x.includes(search)) ? '' : x)
+  .map(x => x.startsWith('×') ? '' : x)
+  .map(x => x === '30' ? '' : x); // 30 is minimum. we already skipped x35, so 30 shouldn't be included.
 
 var lookup = arr.reduce((acc, x, i) => {
   if (i % 10 === 0) {
