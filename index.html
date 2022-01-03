@@ -8,7 +8,8 @@
     <script type="text/javascript" src="index.js"></script>
     <style>
       body, button, input, select, option {
-        font-family: sans-serif;
+        /* taken from https://css-tricks.com/snippets/css/system-font-stack/ - wordpress style */
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
         font-size: 1rem;
         min-width: 175px;
         box-sizing: border-box;
@@ -73,7 +74,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-family: sans-serif;
         position: relative;
       }
       #preview-text-color {
@@ -132,7 +132,7 @@
           <output>400</output>
         </div>
   
-        <label for="text-purpose" aria-describedby="text-purpose-desc">Text purpose</label>
+        <!-- <label for="text-purpose" aria-describedby="text-purpose-desc">Text purpose</label>
         <div>
           <select id="text-purpose" disabled>
             <option value="primary" selected>Primary content</option>
@@ -143,7 +143,7 @@
             Same contrast standard applies for non-text colors on primary content,
             like active navigation item background color, icon on icon-only buttons etc.
           </p>
-        </div>
+        </div> -->
   
         <span class="formGrid-leftHandNote">
           Algorithm aims for APCA level 4
