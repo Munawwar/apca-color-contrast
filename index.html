@@ -41,9 +41,10 @@
         text-align: right;
         color: #555;
       }
-      #text-purpose-desc {
+      #content-purpose-desc {
         max-width: 440px;
         color: #555;
+        margin-top: 10px;
       }
       .formGrid-leftHandNote {
         text-align: right;
@@ -136,18 +137,24 @@
           <output>400</output>
         </div>
   
-        <!-- <label for="text-purpose" aria-describedby="text-purpose-desc">Text purpose</label>
+        <label for="content-purpose" aria-describedby="content-purpose-desc">Content Type</label>
         <div>
-          <select id="text-purpose" disabled>
-            <option value="primary" selected>Primary content</option>
-            <option value="secondary">Secondary content</option>
+          <select id="content-purpose">
+            <option value="singleLineText" selected>Primary content</option>
+            <option value="denseTextOffset">Dense Text</option>
+            <option value="byline">Byline</option>
+            <option value="nonText">Non Text</option>
           </select>
-          <p id="text-purpose-desc">
-            Primary content includes primary navigation, paragraphs etc. <br>
-            Same contrast standard applies for non-text colors on primary content,
-            like active navigation item background color, icon on icon-only buttons etc.
-          </p>
-        </div> -->
+          <details id="content-purpose-desc">
+            <summary>Content types explanation</summary> 
+            <ul style="padding-left: 15px;">
+              <li>Primary content - Single line text. e.g. on a navigation menu item, including it's icons</li>
+              <li>Dense text - large paragraphs of text</li>
+              <li>Byline - e.g. copyright text on the footer of a website</li>
+              <li>Non text - e.g. illustrations</li>
+            </ul>
+          </details>  
+        </div>
   
         <span class="formGrid-leftHandNote">
           Algorithm aims for APCA level 4
@@ -201,6 +208,8 @@
         <tr>
           <td class="cell-input cell-input-hex">
             <input class="input-hex" pattern="#?[0-9a-fA-F]{6}"/>
+            <br>
+            <output id="picker-lc"></output>
           </td>
           <td colspan="2"><div class="swatch"></div></td>
         </tr>
@@ -215,8 +224,8 @@
     <link rel="stylesheet" href="./picker.css" />
     <script type="application/javascript" src="./picker.js"></script>
     <script>
-      document.querySelector('#text-color-change').onclick = window.createColorPickerOnClickHandler(document.querySelector('#text-color'))
-      document.querySelector('#bg-color-change').onclick = window.createColorPickerOnClickHandler(document.querySelector('#bg-color'))
+      document.querySelector('#text-color-change').onclick = window.createColorPickerOnClickHandler(document.querySelector('#text-color'), 'text-color', document.querySelector('#bg-color'))
+      document.querySelector('#bg-color-change').onclick = window.createColorPickerOnClickHandler(document.querySelector('#bg-color'), 'bg-color', document.querySelector('#text-color'))
     </script>
   </body>
 </html>

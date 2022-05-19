@@ -1,5 +1,9 @@
+// depends on index.js for computeContrast()
+
 let colorPickerInitialized = false;
 let initColorPicker = (() => {
+  var pickerLcOutput = document.querySelector('#picker-lc');
+  var colorType, contrastAgainst;
   let pickerSize = 400;
   var aa = "function" == typeof Object.defineProperties ? Object.defineProperty : function(a, b, c) {
       if (a == Array.prototype || a == Object.prototype)
@@ -352,7 +356,9 @@ let initColorPicker = (() => {
   function Ba(a, b) {
       a.f.style.background = "linear-gradient(to right," + b.join(",") + ")"
   }
-  return function initColorPicker() {
+  return function initColorPicker(colorTypeArg, contrastAgainstArg) {
+      colorType = colorTypeArg;
+      contrastAgainst = contrastAgainstArg;
       if (colorPickerInitialized) return;
       colorPickerInitialized = true;
       function a(d) {
@@ -403,7 +409,7 @@ let initColorPicker = (() => {
           l = ea(g),
           m = 190 / l.o);
           c();
-          var B = X(R(S(V(W([f, h, g])))));
+          var B = X(R(S(V(W([f, h, g]))))), currentValue = B;
           Ca.style.backgroundColor = B;
           6 !== t && (A.value = B);
           if (q && (B = l.c.map(a),
@@ -443,9 +449,27 @@ let initColorPicker = (() => {
           q && 2 !== t && Z(sa, g / 100);
           d && 3 !== t && (N.value = f.toFixed(1));
           r && 4 !== t && (O.value = h.toFixed(1));
-          q && 5 !== t && (va.value = g.toFixed(1))
+          q && 5 !== t && (va.value = g.toFixed(1));
+          // If only text color or only bgColor is filled
+          if (contrastAgainst) {
+            let lc = colorType == 'text-color'
+                ? computeContrast(contrastAgainst, currentValue)
+                : computeContrast(currentValue, contrastAgainst);
+            pickerLcOutput.textContent = `Lc ${Math.abs(lc).toFixed(1)}`;
+          } else {
+            pickerLcOutput.textContent = '';
+          }
       }
-      var f = 0, h = 100, g = 50, m = 1, l, n, k = document.getElementById("picker"), p = k.getElementsByTagName("canvas")[0].getContext("2d"), v = document.getElementById("control-s").getElementsByClassName("range-slider")[0], w = document.getElementById("control-h").getElementsByClassName("range-slider")[0], A = k.getElementsByClassName("input-hex")[0], N = k.getElementsByClassName("counter-hue")[0], O = k.getElementsByClassName("counter-saturation")[0], va = k.getElementsByClassName("counter-lightness")[0], Ca = k.getElementsByClassName("swatch")[0];
+      var f = 0, h = 100, g = 50, m = 1, l, n,
+        k = document.getElementById("picker"),
+        p = k.getElementsByTagName("canvas")[0].getContext("2d"),
+        v = document.getElementById("control-s").getElementsByClassName("range-slider")[0],
+        w = document.getElementById("control-h").getElementsByClassName("range-slider")[0],
+        A = k.getElementsByClassName("input-hex")[0],
+        N = k.getElementsByClassName("counter-hue")[0],
+        O = k.getElementsByClassName("counter-saturation")[0],
+        va = k.getElementsByClassName("counter-lightness")[0],
+        Ca = k.getElementsByClassName("swatch")[0];
       k = k.getElementsByTagName("svg")[0];
       var sa = new Aa(document.getElementById("control-l").getElementsByClassName("range-slider")[0],.5,function(d) {
           g = 100 * d;
@@ -563,18 +587,20 @@ let initColorPicker = (() => {
 (() => {
   let internalHexInput = document.querySelector('.input-hex');
   let dialog = document.querySelector('#picker');
+  let pickerLcOutput = document.querySelector('#picker-lc');
   let saveColorButton = document.querySelector('#picker-save-color');
   function setPicker(hex) {
     if (hex.replace('#', '') === internalHexInput.value.replace('#', '')) return;
     internalHexInput.value = '#' + hex.replace('#', '');
+    pickerLcOutput.textContent = '';
     internalHexInput.dispatchEvent(new Event('input'));
   }
 
-  window.createColorPickerOnClickHandler = (colorInputEl) => () => {
+  window.createColorPickerOnClickHandler = (colorInputEl, colorType, contrastAgainstInputEl) => () => {
     dialog.setAttribute('open', '');
     dialog.open = true;
     dialog.querySelector('input').focus(); // focus 1st field for a11y
-    initColorPicker();
+    initColorPicker(colorType, contrastAgainstInputEl.value);
     setPicker(colorInputEl.value);
     saveColorButton.onclick = () => {
       colorInputEl.value = internalHexInput.value.replace('#', '');

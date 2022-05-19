@@ -148,4 +148,9 @@ dialog[open]+.backdrop {
     width: 100%;
     cursor: pointer;
 }
+#picker-lc {
+    margin-top: 15px;
+    display: block;
+    text-align: center;
+}
   

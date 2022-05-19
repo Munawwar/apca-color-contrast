@@ -13,212 +13,326 @@ function computeContrast(bgColor, textColor) {
   )
 }
 
+function findClosestContrastColor(hexColor, isTextColor, targetContrast) {
+  const { l: h, u: s, v: l } = d3.hsluv(d3.rgb(`#${hexColor}`));
+  const colors = [];
+  for (let i = 0; i <= 100; i += 1) {
+    const color = d3.hsluv(h, s, i);
+    /** @type {number} */
+    const contrast = isTextColor
+      ? computeContrast(color.formatHex(), hexColor)
+      : computeContrast(hexColor, color.formatHex());
+    const contrastAbs = Math.abs(contrast);
+    colors.push({
+      lightness: i,
+      color: color.formatHex(),
+      contrast,
+      contrastAbs,
+      diff: calcContrastDelta(targetContrast, contrastAbs),
+    });
+  }
+  // console.log(colors)
+
+  let contrastColor = colors.sort((a, b) => a.diff - b.diff)[0];
+  if (contrastColor.diff === Infinity) {
+    contrastColor = colors.sort((a, b) => b.contrastAbs - a.contrastAbs)[0];
+  }
+  return contrastColor;
+}
+
+function findContrastTextColor(bgColor, targetContrast) {
+  return findClosestContrastColor(bgColor, false, targetContrast);
+}
+function findContrastBgColor(textColor, targetContrast) {
+  return findClosestContrastColor(textColor, true, targetContrast);
+}
+
+
+// byline text = e.g. copyright text at website footer
+// single line text = e.g. text on a button or navigation menu
+// dense text = e.g. a large paragraph of text
+// non-text = e.g. illustrations
 const apcaLookup = {
   "byFontSize": {
     "12": {
-      "100": "",
-      "200": "",
-      "300": "",
-      "400": "100",
-      "500": "100",
-      "600": "90",
-      "700": "90",
-      "800": "",
-      "900": ""
+      "100": {},
+      "200": {},
+      "300": {},
+      "400": {
+        byline: 30,
+      },
+      "500": {
+        byline: 30,
+      },
+      "600": {
+        byline: 30,
+      },
+      "700": {
+        byline: 30,
+      },
+      "800": {},
+      "900": {}
     },
     "14": {
-      "100": "",
-      "200": "",
-      "300": "",
-      "400": "95",
-      "500": "90",
-      "600": "80",
-      "700": "75",
-      "800": "",
-      "900": ""
+      "100": {},
+      "200": {},
+      "300": {
+        byline: 30,
+      },
+      "400": {
+        singleLineText: 95,
+        denseTextOffset: 0,
+      },
+      "500": {
+        singleLineText: 90,
+        denseTextOffset: 0,
+      },
+      "600": {
+        singleLineText: 85,
+        denseTextOffset: 0,
+      },
+      "700": {
+        singleLineText: 75,
+        denseTextOffset: 0,
+      },
+      "800": {},
+      "900": {}
     },
     "16": {
-      "100": "",
-      "200": "",
-      "300": "95",
-      "400": "85",
-      "500": "80",
-      "600": "70",
-      "700": "60",
-      "800": "60",
-      "900": ""
+      "100": {},
+      "200": {},
+      "300": {
+        byline: 30,
+      },
+      "400": {
+        singleLineText: 85,
+        denseTextOffset: 0,
+      },
+      "500": {
+        singleLineText: 80,
+        denseTextOffset: 0,
+      },
+      "600": {
+        singleLineText: 70,
+        denseTextOffset: 0,
+      },
+      "700": {
+        singleLineText: 60,
+        denseTextOffset: 15,
+      },
+      "800": {
+        singleLineText: 55,
+      },
+      "900": {}
     },
     "18": {
-      "100": "",
-      "200": "",
-      "300": "90",
-      "400": "75",
-      "500": "70",
-      "600": "60",
-      "700": "55",
-      "800": "55",
-      "900": "55"
+      "100": {},
+      "200": {
+        byline: 30,
+      },
+      "300": {
+        singleLineText: 95,
+        denseTextOffset: 0,
+      },
+      "400": {
+        singleLineText: 75,
+        denseTextOffset: 0,
+      },
+      "500": {
+        singleLineText: 70,
+        denseTextOffset: 0,
+      },
+      "600": {
+        singleLineText: 60,
+        denseTextOffset: 15,
+      },
+      "700": {
+        singleLineText: 50,
+        denseTextOffset: 15,
+      },
+      "800": {
+        singleLineText: 45,
+      },
+      "900": {
+        singleLineText: 40,
+      },
     },
     "24": {
-      "100": "",
-      "200": "90",
-      "300": "75",
-      "400": "60",
-      "500": "55",
-      "600": "45",
-      "700": "40",
-      "800": "40",
-      "900": "40"
+      "100": {},
+      "200": {
+        byline: 30,
+      },
+      "300": {
+        singleLineText: 75,
+        denseTextOffset: 0,
+      },
+      "400": {
+        singleLineText: 60,
+        denseTextOffset: 0,
+      },
+      "500": {
+        singleLineText: 55,
+        denseTextOffset: 15,
+      },
+      "600": {
+        singleLineText: 45,
+        denseTextOffset: 15,
+      },
+      "700": {
+        singleLineText: 40,
+      },
+      "800": {
+        singleLineText: 40,
+      },
+      "900": {
+        singleLineText: 35,
+      },
     },
     "36": {
-      "100": "",
-      "200": "75",
-      "300": "60",
-      "400": "45",
-      "500": "40",
-      "600": "35",
-      "700": "35",
-      "800": "30",
-      "900": "30"
+      "100": {},
+      "200": {
+        singleLineText: 75,
+      },
+      "300": {
+        singleLineText: 60,
+      },
+      "400": {
+        singleLineText: 45,
+      },
+      "500": {
+        singleLineText: 40,
+      },
+      "600": {
+        singleLineText: 35,
+      },
+      "700": {
+        singleLineText: 35,
+      },
+      "800": {
+        nonText: 30,
+      },
+      "900": {
+        nonText: 30,
+      },
     },
     "48": {
-      "100": "",
-      "200": "55",
-      "300": "50",
-      "400": "40",
-      "500": "35",
-      "600": "30",
-      "700": "30",
-      "800": "30",
-      "900": "30"
+      "100": {
+        singleLineText: 95,
+      },
+      "200": {
+        singleLineText: 60,
+      },
+      "300": {
+        singleLineText: 50,
+      },
+      "400": {
+        singleLineText: 40,
+      },
+      "500": {
+        singleLineText: 35,
+      },
+      "600": {
+        singleLineText: 35,
+      },
+      "700": {
+        nonText: 30,
+      },
+      "800": {
+        nonText: 30,
+      },
+      "900": {
+        nonText: 30,
+      },
     },
     "60": {
-      "100": "",
-      "200": "60",
-      "300": "45",
-      "400": "35",
-      "500": "30",
-      "600": "",
-      "700": "",
-      "800": "",
-      "900": ""
+      "100": {
+        singleLineText: 75,
+      },
+      "200": {
+        singleLineText: 50,
+      },
+      "300": {
+        singleLineText: 45,
+      },
+      "400": {
+        singleLineText: 40,
+      },
+      "500": {
+        singleLineText: 35,
+      },
+      "600": {
+        nonText: 30,
+      },
+      "700": {
+        nonText: 30,
+      },
+      "800": {
+        nonText: 30,
+      },
+      "900": {
+        nonText: 30,
+      }
     },
     "72": {
-      "100": "",
-      "200": "55",
-      "300": "40",
-      "400": "30",
-      "500": "",
-      "600": "",
-      "700": "",
-      "800": "",
-      "900": ""
+      "100": {
+        singleLineText: 65,
+      },
+      "200": {
+        singleLineText: 45,
+      },
+      "300": {
+        singleLineText: 40,
+      },
+      "400": {
+        singleLineText: 35,
+      },
+      "500": {
+        nonText: 30,
+      },
+      "600": {
+        nonText: 30,
+      },
+      "700": {
+        nonText: 30,
+      },
+      "800": {
+        nonText: 30,
+      },
+      "900": {
+        nonText: 30,
+      }
+    },
+    "96": {
+      "100": {
+        singleLineText: 50,
+      },
+      "200": {
+        singleLineText: 40,
+      },
+      "300": {
+        singleLineText: 35,
+      },
+      "400": {
+        nonText: 30,
+      },
+      "500": {
+        nonText: 30,
+      },
+      "600": {
+        nonText: 30,
+      },
+      "700": {
+        nonText: 30,
+      },
+      "800": {
+        nonText: 30,
+      },
+      "900": {
+        nonText: 30,
+      }
     }
   },
-  "byFontWeight": {
-    "100": {
-      "12": "",
-      "14": "",
-      "16": "",
-      "18": "",
-      "24": "",
-      "36": "",
-      "48": "",
-      "60": "",
-      "72": ""
-    },
-    "200": {
-      "12": "",
-      "14": "",
-      "16": "",
-      "18": "",
-      "24": "90",
-      "36": "75",
-      "48": "55",
-      "60": "60",
-      "72": "55"
-    },
-    "300": {
-      "12": "",
-      "14": "",
-      "16": "95",
-      "18": "90",
-      "24": "75",
-      "36": "60",
-      "48": "50",
-      "60": "45",
-      "72": "40"
-    },
-    "400": {
-      "12": "100",
-      "14": "95",
-      "16": "85",
-      "18": "75",
-      "24": "60",
-      "36": "45",
-      "48": "40",
-      "60": "35",
-      "72": "30"
-    },
-    "500": {
-      "12": "100",
-      "14": "90",
-      "16": "80",
-      "18": "70",
-      "24": "55",
-      "36": "40",
-      "48": "35",
-      "60": "30",
-      "72": ""
-    },
-    "600": {
-      "12": "90",
-      "14": "80",
-      "16": "70",
-      "18": "60",
-      "24": "45",
-      "36": "35",
-      "48": "30",
-      "60": "",
-      "72": ""
-    },
-    "700": {
-      "12": "90",
-      "14": "75",
-      "16": "60",
-      "18": "55",
-      "24": "40",
-      "36": "35",
-      "48": "30",
-      "60": "",
-      "72": ""
-    },
-    "800": {
-      "12": "",
-      "14": "",
-      "16": "60",
-      "18": "55",
-      "24": "40",
-      "36": "30",
-      "48": "30",
-      "60": "",
-      "72": ""
-    },
-    "900": {
-      "12": "",
-      "14": "",
-      "16": "",
-      "18": "55",
-      "24": "40",
-      "36": "30",
-      "48": "30",
-      "60": "",
-      "72": ""
-    }
-  }
 };
-
-const targetContrast = 90;
 
 /**
  * calculate value minus target. if delta is negative, cast to +Infinity
@@ -236,6 +350,7 @@ function attach() {
   const bgColorEl = select('#bg-color');
   const fontSizeEl = select('#font-size');
   const fontWeightEl = select('#font-weight');
+  const contentPurposeEl = select('#content-purpose');
   const previewBgColorEl = select('#preview-bg-color');
   const previewTextColorEl = select('#preview-text-color');
   const previewNoteEl = select('#preview-note');
@@ -253,6 +368,7 @@ function attach() {
     const bgColor = bgColorEl.value.trim().replace(/^#/, '');
     const fontSize = parseFloat(fontSizeEl.value);
     const fontWeight = parseFloat(fontWeightEl.value);
+    const contentPurpose = contentPurposeEl.value;
 
     valid = false;
     if (!fontSize) {
@@ -277,14 +393,27 @@ function attach() {
     valid = true;
     showError('');
 
-    let contrastLevelToMatch = apcaLookup.byFontSize[fontSize][fontWeight];
-    if (contrastLevelToMatch === '>20') {
-      contrastLevelToMatch = '20';
+    const byContentType = apcaLookup.byFontSize[fontSize][fontWeight];
+    let contrastLevelToMatch = byContentType[contentPurpose];
+    if (contrastLevelToMatch === undefined) {
+      switch (contentPurpose) {
+        case 'nonText':
+          contrastLevelToMatch = (
+            byContentType.singleLineText || byContentType.byline
+          ) ? 30 : undefined;
+          break;
+        case 'byline':
+          contrastLevelToMatch = byContentType.singleLineText ? 30 : undefined;
+          break;
+      }
     }
     contrastLevelToMatch = parseFloat(contrastLevelToMatch);
     if (!contrastLevelToMatch) {
       showError('Selected font size + font weight combination is discouraged. Either change font size or font weight');
       return;
+    }
+    if (contentPurpose === 'denseTextOffset') {
+      contrastLevelToMatch += byContentType.singleLineText;
     }
 
     // compute a good contrast color
@@ -295,32 +424,15 @@ function attach() {
       previewTextColorEl.textContent = 'Preview';
       previewTextColorEl.style.fontSize = `${fontSize}px`;
       previewTextColorEl.style.fontWeight = fontWeight;
-      const note = contrastAbs < contrastLevelToMatch
+      let note = contrastAbs < contrastLevelToMatch
         ? `Failed to match contrast ${contrastLevelToMatch} (Currently ${contrastAbs.toFixed(1)}). I suggest changing font weight or font size.`
         : `Passes contrast level ${contrastLevelToMatch}`;
+      if (fontWeight === 100 && contrastAbs >= contrastLevelToMatch) {
+        note += ' (but font weight 100 should be avoided)';
+      }
       previewNoteEl.textContent = note;
     } else if (textColor) {
-      const { l: h, u: s, v: l } = d3.hsluv(d3.rgb(`#${textColor}`));
-      const colors = [];
-      for (let i = 0; i <= 100; i += 1) {
-        const color = d3.hsluv(h, s, i);
-        /** @type {number} */
-        const contrast = computeContrast(color.formatHex(), textColor);
-        const contrastAbs = Math.abs(contrast);
-        colors.push({
-          lightness: i,
-          color: color.formatHex(),
-          contrast,
-          contrastAbs,
-          diff: calcContrastDelta(contrastLevelToMatch, contrastAbs),
-        });
-      }
-      // console.log(colors)
-
-      let contrastColor = colors.sort((a, b) => a.diff - b.diff)[0];
-      if (contrastColor.diff === Infinity) {
-        contrastColor = colors.sort((a, b) => b.contrastAbs - a.contrastAbs)[0];
-      }
+      const contrastColor = findContrastBgColor(textColor, contrastLevelToMatch);
       // console.log(contrastColor);
   
       previewBgColorEl.style.backgroundColor = contrastColor.color;
@@ -328,33 +440,15 @@ function attach() {
       previewTextColorEl.style.color = `#${textColor}`;
       previewTextColorEl.style.fontSize = `${fontSize}px`;
       previewTextColorEl.style.fontWeight = fontWeight;
-      const note = contrastColor.contrastAbs < contrastLevelToMatch
+      let note = contrastColor.contrastAbs < contrastLevelToMatch
         ? `Failed to match contrast ${contrastLevelToMatch}. Showing closest match (${contrastColor.contrastAbs.toFixed(1)}). I suggest changing font weight or font size.`
         : `Passes contrast level ${contrastLevelToMatch}`;
+      if (fontWeight === 100 && contrastAbs >= contrastLevelToMatch) {
+        note += ' (but font weight 100 should be avoided)';
+      }
       previewNoteEl.textContent = note;
     } else {
-      const { l: h, u: s, v: l } = d3.hsluv(d3.rgb(`#${bgColor}`));
-      const colors = [];
-      for (let i = 0; i <= 100; i += 1) {
-        const color = d3.hsluv(h, s, i);
-        /** @type {number} */
-        const contrast = computeContrast(bgColor, color.formatHex());
-        const contrastAbs = Math.abs(contrast);
-        colors.push({
-          lightness: i,
-          /** @type {string} */
-          color: color.formatHex(),
-          contrast,
-          contrastAbs: Math.abs(contrast),
-          diff: calcContrastDelta(contrastLevelToMatch, contrastAbs),
-        });
-      }
-      // console.log(colors)
-      
-      let contrastColor = colors.sort((a, b) => a.diff - b.diff)[0];
-      if (contrastColor.diff === Infinity) {
-        contrastColor = colors.sort((a, b) => b.contrastAbs - a.contrastAbs)[0];
-      }
+      const contrastColor = findContrastTextColor(bgColor, contrastLevelToMatch);
       // console.log(contrastColor);
   
       previewBgColorEl.style.backgroundColor = `#${bgColor}`;
@@ -370,8 +464,9 @@ function attach() {
   };
   compute();
 
-  select('#text-color').oninput =
-    select('#bg-color').oninput =
-    select('#font-size').onchange =
-    select('#font-weight').onchange = compute;
+  textColorEl.oninput =
+    bgColorEl.oninput =
+    fontSizeEl.onchange =
+    fontWeightEl.onchange =
+    contentPurposeEl.onchange = compute;
 }
