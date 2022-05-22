@@ -80,19 +80,19 @@ const apcaLookup = {
         byline: 30,
       },
       "400": {
-        singleLineText: 95,
+        sparseContent: 95,
         denseTextOffset: 0,
       },
       "500": {
-        singleLineText: 90,
+        sparseContent: 90,
         denseTextOffset: 0,
       },
       "600": {
-        singleLineText: 85,
+        sparseContent: 85,
         denseTextOffset: 0,
       },
       "700": {
-        singleLineText: 75,
+        sparseContent: 75,
         denseTextOffset: 0,
       },
       "800": {},
@@ -105,23 +105,23 @@ const apcaLookup = {
         byline: 30,
       },
       "400": {
-        singleLineText: 85,
+        sparseContent: 85,
         denseTextOffset: 0,
       },
       "500": {
-        singleLineText: 80,
+        sparseContent: 80,
         denseTextOffset: 0,
       },
       "600": {
-        singleLineText: 70,
+        sparseContent: 70,
         denseTextOffset: 0,
       },
       "700": {
-        singleLineText: 60,
+        sparseContent: 60,
         denseTextOffset: 15,
       },
       "800": {
-        singleLineText: 55,
+        sparseContent: 55,
       },
       "900": {}
     },
@@ -131,30 +131,30 @@ const apcaLookup = {
         byline: 30,
       },
       "300": {
-        singleLineText: 95,
+        sparseContent: 95,
         denseTextOffset: 0,
       },
       "400": {
-        singleLineText: 75,
+        sparseContent: 75,
         denseTextOffset: 0,
       },
       "500": {
-        singleLineText: 70,
+        sparseContent: 70,
         denseTextOffset: 0,
       },
       "600": {
-        singleLineText: 60,
+        sparseContent: 60,
         denseTextOffset: 15,
       },
       "700": {
-        singleLineText: 50,
+        sparseContent: 50,
         denseTextOffset: 15,
       },
       "800": {
-        singleLineText: 45,
+        sparseContent: 45,
       },
       "900": {
-        singleLineText: 40,
+        sparseContent: 40,
       },
     },
     "24": {
@@ -163,50 +163,50 @@ const apcaLookup = {
         byline: 30,
       },
       "300": {
-        singleLineText: 75,
+        sparseContent: 75,
         denseTextOffset: 0,
       },
       "400": {
-        singleLineText: 60,
+        sparseContent: 60,
         denseTextOffset: 0,
       },
       "500": {
-        singleLineText: 55,
+        sparseContent: 55,
         denseTextOffset: 15,
       },
       "600": {
-        singleLineText: 45,
+        sparseContent: 45,
         denseTextOffset: 15,
       },
       "700": {
-        singleLineText: 40,
+        sparseContent: 40,
       },
       "800": {
-        singleLineText: 40,
+        sparseContent: 40,
       },
       "900": {
-        singleLineText: 35,
+        sparseContent: 35,
       },
     },
     "36": {
       "100": {},
       "200": {
-        singleLineText: 75,
+        sparseContent: 75,
       },
       "300": {
-        singleLineText: 60,
+        sparseContent: 60,
       },
       "400": {
-        singleLineText: 45,
+        sparseContent: 45,
       },
       "500": {
-        singleLineText: 40,
+        sparseContent: 40,
       },
       "600": {
-        singleLineText: 35,
+        sparseContent: 35,
       },
       "700": {
-        singleLineText: 35,
+        sparseContent: 35,
       },
       "800": {
         nonText: 30,
@@ -217,22 +217,22 @@ const apcaLookup = {
     },
     "48": {
       "100": {
-        singleLineText: 95,
+        sparseContent: 95,
       },
       "200": {
-        singleLineText: 60,
+        sparseContent: 60,
       },
       "300": {
-        singleLineText: 50,
+        sparseContent: 50,
       },
       "400": {
-        singleLineText: 40,
+        sparseContent: 40,
       },
       "500": {
-        singleLineText: 35,
+        sparseContent: 35,
       },
       "600": {
-        singleLineText: 35,
+        sparseContent: 35,
       },
       "700": {
         nonText: 30,
@@ -246,19 +246,19 @@ const apcaLookup = {
     },
     "60": {
       "100": {
-        singleLineText: 75,
+        sparseContent: 75,
       },
       "200": {
-        singleLineText: 50,
+        sparseContent: 50,
       },
       "300": {
-        singleLineText: 45,
+        sparseContent: 45,
       },
       "400": {
-        singleLineText: 40,
+        sparseContent: 40,
       },
       "500": {
-        singleLineText: 35,
+        sparseContent: 35,
       },
       "600": {
         nonText: 30,
@@ -275,16 +275,16 @@ const apcaLookup = {
     },
     "72": {
       "100": {
-        singleLineText: 65,
+        sparseContent: 65,
       },
       "200": {
-        singleLineText: 45,
+        sparseContent: 45,
       },
       "300": {
-        singleLineText: 40,
+        sparseContent: 40,
       },
       "400": {
-        singleLineText: 35,
+        sparseContent: 35,
       },
       "500": {
         nonText: 30,
@@ -304,13 +304,13 @@ const apcaLookup = {
     },
     "96": {
       "100": {
-        singleLineText: 50,
+        sparseContent: 50,
       },
       "200": {
-        singleLineText: 40,
+        sparseContent: 40,
       },
       "300": {
-        singleLineText: 35,
+        sparseContent: 35,
       },
       "400": {
         nonText: 30,
@@ -399,11 +399,11 @@ function attach() {
       switch (contentPurpose) {
         case 'nonText':
           contrastLevelToMatch = (
-            byContentType.singleLineText || byContentType.byline
+            byContentType.sparseContent || byContentType.byline
           ) ? 30 : undefined;
           break;
         case 'byline':
-          contrastLevelToMatch = byContentType.singleLineText ? 30 : undefined;
+          contrastLevelToMatch = byContentType.sparseContent ? 30 : undefined;
           break;
       }
     }
@@ -413,7 +413,7 @@ function attach() {
       return;
     }
     if (contentPurpose === 'denseTextOffset') {
-      contrastLevelToMatch += byContentType.singleLineText;
+      contrastLevelToMatch += byContentType.sparseContent;
     }
 
     // compute a good contrast color
