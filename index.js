@@ -2,6 +2,10 @@ function select(str) {
   return document.querySelector(str);
 }
 
+function isValidHexColor(str) {
+  return /^#?[0-9a-f]{6}$/i.test((str || '').trim());
+}
+
 /**
  * @param {string} bgColor in sRGB hex (# allowed as prefix)
  * @param {string} textColor in sRGB hex (# allowed as prefix)
@@ -348,6 +352,8 @@ let valid = false;
 function attach() {
   const textColorEl = select('#text-color');
   const bgColorEl = select('#bg-color');
+  const textColorPreviewEl = select('#text-color-change');
+  const bgColorPreviewEl = select('#bg-color-change');
   const fontSizeEl = select('#font-size');
   const fontWeightEl = select('#font-weight');
   const contentPurposeEl = select('#content-purpose');
@@ -369,6 +375,9 @@ function attach() {
     const fontSize = parseFloat(fontSizeEl.value);
     const fontWeight = parseFloat(fontWeightEl.value);
     const contentPurpose = contentPurposeEl.value;
+
+    textColorPreviewEl.style.backgroundColor = isValidHexColor(textColor) ? `#${textColor}` : null;
+    bgColorPreviewEl.style.backgroundColor = isValidHexColor(bgColor) ? `#${bgColor}` : null;
 
     valid = false;
     if (!fontSize) {

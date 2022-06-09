@@ -596,7 +596,12 @@ let initColorPicker = (() => {
     internalHexInput.dispatchEvent(new Event('input'));
   }
 
-  window.createColorPickerOnClickHandler = (colorInputEl, colorType, contrastAgainstInputEl) => () => {
+  function isValidHexColor(str) {
+    return /^#?[0-9a-f]{6}$/i.test((str || '').trim());
+  }
+
+  window.createColorPickerOnClickHandler = (colorInputEl, colorType, contrastAgainstInputEl) => (event) => {
+    let colorPreviewButton = event.currentTarget;
     dialog.setAttribute('open', '');
     dialog.open = true;
     dialog.querySelector('input').focus(); // focus 1st field for a11y
@@ -604,6 +609,9 @@ let initColorPicker = (() => {
     setPicker(colorInputEl.value);
     saveColorButton.onclick = () => {
       colorInputEl.value = internalHexInput.value.replace('#', '');
+      colorPreviewButton.style.backgroundColor = isValidHexColor(internalHexInput.value)
+        ? `#${internalHexInput.value.trim().replace('#', '')}`
+        : null;
       colorInputEl.dispatchEvent(new Event('input'));
       saveColorButton.onclick = null;
       dialog.removeAttribute('open');

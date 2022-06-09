@@ -17,6 +17,9 @@
       input, button {
         padding: 5px 2px;
       }
+      button {
+        cursor: pointer;
+      }
       select {
         padding: 5px 0;
       }
@@ -40,6 +43,7 @@
       .formGrid label {
         text-align: right;
         color: #555;
+        white-space: nowrap;
       }
       #content-purpose-desc {
         max-width: 440px;
@@ -57,9 +61,33 @@
         vertical-align: middle;
       }
 
-      /* for mobile */
       #text-color, #bg-color {
-        margin-bottom: 5px;
+        min-width: auto;
+        width: 140px;
+      }
+      .colorChangeButtonWrapper {
+        display: inline-block;
+        background: linear-gradient(45deg, rgba(2,0,36,0) 0%, rgba(0,0,0,0) 40%, rgba(128,128,128,0.5) 50%, rgba(0,0,0,0) 60%, rgba(0,212,255,0) 100%);
+      }
+      #text-color-change, #bg-color-change {
+        display: inline-block;
+        border: 2px solid #bababa;
+        min-width: auto;
+        width: 32px;
+        background: transparent;
+      }
+
+      #swap-colors {
+        background-color: transparent;
+        position: absolute;
+        top: -20px;
+        left: 147px;
+        width: 25px;
+        min-width: auto;
+        font-size: 12px;
+        padding: 2px;
+        border: none;
+        cursor: pointer;
       }
 
       #error:not(:empty) {
@@ -94,7 +122,6 @@
         margin-top: 5px;
         text-align: center;
       }
-
     </style>
   </head>
   <body onload="attach()">
@@ -104,19 +131,20 @@
         <br>Or fill in both to check if contrast passes.
       </p>
       <div class="formGrid">
-        <label for="text-color">Text color (in hex)</label>
+        <label for="text-color">Text color</label>
         <div>
           <input type="text" id="text-color" />
-          <button id="text-color-change">Adjust Color</button>
+          <span class="colorChangeButtonWrapper"><button id="text-color-change" aria-label="Adjust Color"><span aria-hidden="true">&nbsp;</span></button></span>
         </div>
-  
-        <label for="bg-color">Background color (in hex)</label>
-        <div>
+
+        <label for="bg-color">Background color</label>
+        <div style="position: relative">
           <input type="text" id="bg-color" value="f2f4ff" />
-          <button id="bg-color-change">Adjust Color</button>
+          <span class="colorChangeButtonWrapper"><button id="bg-color-change" aria-label="Adjust Color" style="background-color: #f2f4ff;"><span aria-hidden="true">&nbsp;</span></button></span>
+          <button aria-label="Swap colors" id="swap-colors" onclick="window.swapColors()"><span aria-hidden="true">⇅</span></button>
         </div>
   
-        <label for="font-size">Font Size (in pixels)</label>
+        <label for="font-size">Font Size (px)</label>
         <div>
           <!-- font scale inspired from Refactoring UI book -->
           <select id="font-size">
@@ -155,6 +183,8 @@
             </ul>
           </details>  
         </div>
+
+        <hr style="grid-column: 1/-1; width: 100%">
   
         <span class="formGrid-leftHandNote">
           Algorithm aims for APCA level 4
@@ -224,8 +254,32 @@
     <link rel="stylesheet" href="./picker.css" />
     <script type="application/javascript" src="./picker.js"></script>
     <script>
-      document.querySelector('#text-color-change').onclick = window.createColorPickerOnClickHandler(document.querySelector('#text-color'), 'text-color', document.querySelector('#bg-color'))
-      document.querySelector('#bg-color-change').onclick = window.createColorPickerOnClickHandler(document.querySelector('#bg-color'), 'bg-color', document.querySelector('#text-color'))
+      (() => {
+        let textColorPreviewEl = document.querySelector('#text-color-change'),
+            bgColorPreviewEl = document.querySelector('#bg-color-change'),
+            textColorInput = document.querySelector('#text-color'),
+            bgColorInput = document.querySelector('#bg-color');
+        
+        textColorPreviewEl.onclick = window.createColorPickerOnClickHandler(document.querySelector('#text-color'), 'text-color', document.querySelector('#bg-color'));
+        bgColorPreviewEl.onclick = window.createColorPickerOnClickHandler(document.querySelector('#bg-color'), 'bg-color', document.querySelector('#text-color'));
+
+        function isValidHexColor(str) {
+          return /^#?[0-9a-f]{6}$/i.test((str || '').trim());
+        }
+
+        window.swapColors = function swapColors() {
+          var temp = textColorInput.value;
+          textColorInput.value = bgColorInput.value;
+          bgColorInput.value = temp;
+
+          textColorPreviewEl.style.backgroundColor = isValidHexColor(textColorInput.value)
+            ? `#${textColorInput.value.trim().replace('#', '')}`
+            : null;
+          bgColorPreviewEl.style.backgroundColor = isValidHexColor(bgColorInput.value)
+            ? `#${bgColorInput.value.trim().replace('#', '')}`
+            : null;
+        }
+      })();
     </script>
   </body>
 </html>
