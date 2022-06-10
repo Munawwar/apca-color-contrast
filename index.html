@@ -91,6 +91,11 @@
         cursor: pointer;
       }
 
+      .boldEm {
+        font-weight: 600;
+        font-style: normal;
+      }
+
       #error:not(:empty) {
         color: maroon;
         max-width: 440px;
@@ -177,10 +182,10 @@
           <details id="content-purpose-desc">
             <summary>Content types explanation</summary> 
             <ul style="padding-left: 15px;">
-              <li>Sparse content - Upto two lines of text. e.g. a navigation menu item, including it's icon</li>
-              <li>Dense text - large paragraphs of text</li>
-              <li>Byline - e.g. copyright text on the footer of a website</li>
-              <li>Non-text - e.g. a decorative border</li>
+              <li><em class="boldEm">Sparse content</em>: Upto two lines of text. e.g. a navigation menu item, including it's icon</li>
+              <li><em class="boldEm">Dense text</em>: large paragraphs of text</li>
+              <li><em class="boldEm">Byline</em>: e.g. copyright text on the footer of a website</li>
+              <li><em class="boldEm">Non-text</em>: e.g. a decorative border</li>
             </ul>
           </details>  
         </div>
