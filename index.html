@@ -278,12 +278,8 @@
           textColorInput.value = bgColorInput.value;
           bgColorInput.value = temp;
 
-          textColorPreviewEl.style.backgroundColor = isValidHexColor(textColorInput.value)
-            ? `#${textColorInput.value.trim().replace('#', '')}`
-            : null;
-          bgColorPreviewEl.style.backgroundColor = isValidHexColor(bgColorInput.value)
-            ? `#${bgColorInput.value.trim().replace('#', '')}`
-            : null;
+          // trigger a re-computation
+          textColorInput.dispatchEvent(new Event('input'));
         }
       })();
     </script>

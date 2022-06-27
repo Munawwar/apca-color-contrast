@@ -590,7 +590,9 @@ let initColorPicker = (() => {
   let pickerLcOutput = document.querySelector('#picker-lc');
   let saveColorButton = document.querySelector('#picker-save-color');
   function setPicker(hex) {
-    if (hex.replace('#', '') === internalHexInput.value.replace('#', '')) return;
+    // comment out line as causes an issue when swapping colors: The Lc value inside
+    // color picker dialog doesn't update in some scenarios
+    // if (hex.replace('#', '') === internalHexInput.value.replace('#', '')) return;
     internalHexInput.value = '#' + hex.replace('#', '');
     pickerLcOutput.textContent = '';
     internalHexInput.dispatchEvent(new Event('input'));
