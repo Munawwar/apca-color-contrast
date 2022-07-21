@@ -140,7 +140,7 @@ const apcaLookup = {
       },
       "400": {
         sparseContent: 75,
-        denseTextOffset: 15,
+        denseTextOffset: 0,
       },
       "500": {
         sparseContent: 70,
@@ -340,7 +340,7 @@ const apcaLookup = {
       "900": {
         nonText: 30,
       }
-    }
+    },
   },
 };
 

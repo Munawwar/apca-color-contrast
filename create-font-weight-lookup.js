@@ -1,112 +1,41 @@
-const byFontSize = {
-  "12": {
-      "100": "",
-      "200": "",
-      "300": "",
-      "400": "100",
-      "500": "100",
-      "600": "90",
-      "700": "90",
-      "800": "",
-      "900": ""
-  },
-  "14": {
-      "100": "",
-      "200": "",
-      "300": "",
-      "400": "95",
-      "500": "90",
-      "600": "80",
-      "700": "75",
-      "800": "",
-      "900": ""
-  },
-  "16": {
-      "100": "",
-      "200": "",
-      "300": "95",
-      "400": "85",
-      "500": "80",
-      "600": "70",
-      "700": "60",
-      "800": "60",
-      "900": ""
-  },
-  "18": {
-      "100": "",
-      "200": "",
-      "300": "90",
-      "400": "75",
-      "500": "70",
-      "600": "60",
-      "700": "55",
-      "800": "55",
-      "900": "55"
-  },
-  "24": {
-      "100": "",
-      "200": "90",
-      "300": "75",
-      "400": "60",
-      "500": "55",
-      "600": "45",
-      "700": "40",
-      "800": "40",
-      "900": "40"
-  },
-  "36": {
-      "100": "",
-      "200": "75",
-      "300": "60",
-      "400": "45",
-      "500": "40",
-      "600": "35",
-      "700": "35",
-      "800": "30",
-      "900": "30"
-  },
-  "48": {
-      "100": "",
-      "200": "55",
-      "300": "50",
-      "400": "40",
-      "500": "35",
-      "600": "30",
-      "700": "30",
-      "800": "30",
-      "900": "30"
-  },
-  "60": {
-      "100": "",
-      "200": "60",
-      "300": "45",
-      "400": "35",
-      "500": "30",
-      "600": "",
-      "700": "",
-      "800": "",
-      "900": ""
-  },
-  "72": {
-      "100": "",
-      "200": "55",
-      "300": "40",
-      "400": "30",
-      "500": "",
-      "600": "",
-      "700": "",
-      "800": "",
-      "900": ""
-  }
-};
+// Usage: Go to browser dev tools and select the apca table element and run the code
+// $0 is the table element
 
-const byFontWeight = Object.entries(byFontSize).reduce((acc, [fontSize, weights]) => {
-  Object.entries(weights).forEach(([fontWeight, lc]) => {
-    acc[fontWeight] = acc[fontWeight] || {};
-    acc[fontWeight][fontSize] = lc;
-  });
-  return acc;
-}, {});
+var fontWeights = [100,200,300,400,500,600,700,800,900];
+var fontSizes = [12,14,16,18,24,36,48,60,72,96];
+var fontLookupTable = Array
+    .from($0.querySelectorAll('tr'))
+    .slice(6) // the first 6 lines are just headers
+    .map(el => Array
+        .from(el.querySelectorAll('th,td'))
+        .map(el2 => [el2, el2.textContent.trim()])
+    )
+    .filter(arr => arr.length > 10) // the last row is copyright stuff
+    .reduce((acc, row) => {
+        const [, fontSize] = row[1];
+        if (!fontSizes.includes(+fontSize)) return acc;
+        acc[fontSize] = acc[fontSize] || {};
+        row.slice(2).reduce((acc2, [el, value], index) => {
+            const fontWeight = fontWeights[index];
+            acc2[fontWeight] = acc2[fontWeight] || {};
+            const obj = acc2[fontWeight];
+            if (value === '®©') {
+                obj.byline = 30;
+            } else if (+value < 35) {
+                obj.nonText = +value;
+            } else if (value !== '⊘') {
+                obj.sparseContent = +value;
+                const denseTextOffset = window.getComputedStyle(el, '::after').getPropertyValue('content').slice(1,-1);
+                if (denseTextOffset === 'B') {
+                    obj.denseTextOffset = 0;
+                } else if (Number.isFinite(+denseTextOffset)) {
+                    obj.denseTextOffset = +denseTextOffset;
+                }
+            }
+            return acc2;
+        }, acc[fontSize]);
+        return acc;
+    }, {});
 
-console.log(JSON.stringify(byFontSize, 0, 2));
+console.log(JSON.stringify(fontLookupTable, 0, 2));
 // console.log(JSON.stringify(byFontWeight, 0, 2));
