@@ -423,7 +423,7 @@ function attach() {
       }
     }
     contrastLevelToMatch = parseFloat(contrastLevelToMatch);
-    if (!contrastLevelToMatch) {
+    if (!Number.isFinite(contrastLevelToMatch)) {
       showError('Selected font size + font weight combination is discouraged. Either change font size or font weight');
       return;
     }
