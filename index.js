@@ -63,16 +63,16 @@ const apcaLookup = {
       "200": {},
       "300": {},
       "400": {
-        byline: 30,
+        "byline": 30
       },
       "500": {
-        byline: 30,
+        "byline": 30
       },
       "600": {
-        byline: 30,
+        "byline": 30
       },
       "700": {
-        byline: 30,
+        "byline": 30
       },
       "800": {},
       "900": {}
@@ -81,23 +81,23 @@ const apcaLookup = {
       "100": {},
       "200": {},
       "300": {
-        byline: 30,
+        "byline": 30
       },
       "400": {
-        sparseContent: 100,
-        denseTextOffset: 0,
+        "sparseContent": 100,
+        "denseTextOffset": 0
       },
       "500": {
-        sparseContent: 100,
-        denseTextOffset: 0,
+        "sparseContent": 100,
+        "denseTextOffset": 0
       },
       "600": {
-        sparseContent: 90,
-        denseTextOffset: 0,
+        "sparseContent": 90,
+        "denseTextOffset": 0
       },
       "700": {
-        sparseContent: 75,
-        denseTextOffset: 0,
+        "sparseContent": 75,
+        "denseTextOffset": 0
       },
       "800": {},
       "900": {}
@@ -106,242 +106,242 @@ const apcaLookup = {
       "100": {},
       "200": {},
       "300": {
-        byline: 30,
+        "byline": 30
       },
       "400": {
-        sparseContent: 90,
-        denseTextOffset: 0,
+        "sparseContent": 90,
+        "denseTextOffset": 0
       },
       "500": {
-        sparseContent: 75,
-        denseTextOffset: 0,
+        "sparseContent": 75,
+        "denseTextOffset": 0
       },
       "600": {
-        sparseContent: 70,
-        denseTextOffset: 15,
+        "sparseContent": 70,
+        "denseTextOffset": 15
       },
       "700": {
-        sparseContent: 60,
-        denseTextOffset: 15,
+        "sparseContent": 60,
+        "denseTextOffset": 15
       },
       "800": {
-        sparseContent: 60,
+        "sparseContent": 60
       },
       "900": {}
     },
     "18": {
       "100": {},
       "200": {
-        byline: 30,
+        "byline": 30
       },
       "300": {
-        sparseContent: 100,
-        denseTextOffset: 0,
+        "sparseContent": 100,
+        "denseTextOffset": 0
       },
       "400": {
-        sparseContent: 75,
-        denseTextOffset: 0,
+        "sparseContent": 75,
+        "denseTextOffset": 0
       },
       "500": {
-        sparseContent: 70,
-        denseTextOffset: 15,
+        "sparseContent": 70,
+        "denseTextOffset": 15
       },
       "600": {
-        sparseContent: 60,
-        denseTextOffset: 15,
+        "sparseContent": 60,
+        "denseTextOffset": 15
       },
       "700": {
-        sparseContent: 55,
-        denseTextOffset: 15,
+        "sparseContent": 55,
+        "denseTextOffset": 15
       },
       "800": {
-        sparseContent: 55,
+        "sparseContent": 55
       },
       "900": {
-        sparseContent: 55,
-      },
+        "sparseContent": 55
+      }
     },
     "24": {
       "100": {},
       "200": {
-        byline: 30,
+        "byline": 30
       },
       "300": {
-        sparseContent: 75,
-        denseTextOffset: 0,
+        "sparseContent": 75,
+        "denseTextOffset": 0
       },
       "400": {
-        sparseContent: 60,
-        denseTextOffset: 15,
+        "sparseContent": 60,
+        "denseTextOffset": 15
       },
       "500": {
-        sparseContent: 55,
-        denseTextOffset: 15,
+        "sparseContent": 55,
+        "denseTextOffset": 15
       },
       "600": {
-        sparseContent: 50,
-        denseTextOffset: 15,
+        "sparseContent": 50,
+        "denseTextOffset": 15
       },
       "700": {
-        sparseContent: 45,
-        denseTextOffset: 15,
+        "sparseContent": 45,
+        "denseTextOffset": 15
       },
       "800": {
-        sparseContent: 45,
+        "sparseContent": 45
       },
       "900": {
-        sparseContent: 45,
-      },
+        "sparseContent": 45
+      }
     },
     "36": {
       "100": {},
       "200": {
-        sparseContent: 75,
+        "sparseContent": 75
       },
       "300": {
-        sparseContent: 60,
-        denseTextOffset: 15,
+        "sparseContent": 60,
+        "denseTextOffset": 15
       },
       "400": {
-        sparseContent: 45,
-        denseTextOffset: 15,
+        "sparseContent": 45,
+        "denseTextOffset": 15
       },
       "500": {
-        sparseContent: 43,
-        denseTextOffset: 15,
+        "sparseContent": 43,
+        "denseTextOffset": 15
       },
       "600": {
-        sparseContent: 40,
-        denseTextOffset: 15,
+        "sparseContent": 40,
+        "denseTextOffset": 15
       },
       "700": {
-        sparseContent: 38,
-        denseTextOffset: 15,
+        "sparseContent": 38,
+        "denseTextOffset": 15
       },
       "800": {
-        sparseContent: 38,
+        "sparseContent": 38
       },
       "900": {
-        sparseContent: 38,
-      },
+        "sparseContent": 38
+      }
     },
     "48": {
       "100": {
-        sparseContent: 90,
+        "sparseContent": 90
       },
       "200": {
-        sparseContent: 60,
+        "sparseContent": 60
       },
       "300": {
-        sparseContent: 50,
+        "sparseContent": 50
       },
       "400": {
-        sparseContent: 40,
+        "sparseContent": 40
       },
       "500": {
-        sparseContent: 38,
+        "sparseContent": 38
       },
       "600": {
-        sparseContent: 35,
+        "sparseContent": 35
       },
       "700": {
-        nonText: 33,
+        "nonText": 33
       },
       "800": {
-        nonText: 33,
+        "nonText": 33
       },
       "900": {
-        nonText: 33,
-      },
+        "nonText": 33
+      }
     },
     "60": {
       "100": {
-        sparseContent: 75,
+        "sparseContent": 75
       },
       "200": {
-        sparseContent: 55,
+        "sparseContent": 55
       },
       "300": {
-        sparseContent: 45,
+        "sparseContent": 45
       },
       "400": {
-        sparseContent: 38,
+        "sparseContent": 38
       },
       "500": {
-        sparseContent: 35,
+        "sparseContent": 35
       },
       "600": {
-        nonText: 33,
+        "nonText": 33
       },
       "700": {
-        nonText: 30,
+        "nonText": 30
       },
       "800": {
-        nonText: 30,
+        "nonText": 30
       },
       "900": {
-        nonText: 30,
+        "nonText": 30
       }
     },
     "72": {
       "100": {
-        sparseContent: 60,
+        "sparseContent": 60
       },
       "200": {
-        sparseContent: 50,
+        "sparseContent": 50
       },
       "300": {
-        sparseContent: 40,
+        "sparseContent": 40
       },
       "400": {
-        sparseContent: 35,
+        "sparseContent": 35
       },
       "500": {
-        nonText: 33,
+        "nonText": 33
       },
       "600": {
-        nonText: 30,
+        "nonText": 30
       },
       "700": {
-        nonText: 30,
+        "nonText": 30
       },
       "800": {
-        nonText: 30,
+        "nonText": 30
       },
       "900": {
-        nonText: 30,
+        "nonText": 30
       }
     },
     "96": {
       "100": {
-        sparseContent: 50,
+        "sparseContent": 50
       },
       "200": {
-        sparseContent: 45,
+        "sparseContent": 45
       },
       "300": {
-        sparseContent: 35,
+        "sparseContent": 35
       },
       "400": {
-        nonText: 33,
+        "nonText": 33
       },
       "500": {
-        nonText: 30,
+        "nonText": 30
       },
       "600": {
-        nonText: 30,
+        "nonText": 30
       },
       "700": {
-        nonText: 30,
+        "nonText": 30
       },
       "800": {
-        nonText: 30,
+        "nonText": 30
       },
       "900": {
-        nonText: 30,
+        "nonText": 30
       }
-    },
-  },
+    }
+  }
 };
 
 /**
